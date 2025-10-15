@@ -1,0 +1,79 @@
+# ==========================
+# GLOBAL
+# ==========================
+.DS_Store
+*.log
+*.env
+.env.*
+__pycache__/
+*.py[cod]
+*$py.class
+.idea/
+.vscode/
+*.swp
+*.swo
+*.bak
+*.tmp
+*.orig
+
+# ==========================
+# PYTHON / BACKEND
+# ==========================
+venv/
+.env/
+.venv/
+dist/
+build/
+pip-wheel-metadata/
+*.egg-info/
+.eggs/
+htmlcov/
+.coverage
+.cache/
+pytest_cache/
+instance/
+db.sqlite3
+/migrations/
+
+# ==========================
+# FRONTEND (React / Node)
+# ==========================
+frontend/node_modules/
+frontend/.vite/
+frontend/dist/
+frontend/.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+
+# ==========================
+# DOCKER / COMPOSE
+# ==========================
+*.pid
+*.seed
+*.tar
+docker-compose.override.yml
+rolebased-app-fixed*
+rolebased-app-v2*
+dbdata/
+pgadmin-data/
+
+# ==========================
+# TESTS / REPORTS
+# ==========================
+*.coverage
+coverage.xml
+test-results/
+reports/
+junit.xml
+
+# ==========================
+# SYSTEM FILES
+# ==========================
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
