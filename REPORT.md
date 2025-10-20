@@ -24,6 +24,9 @@ A small project management app showcasing role-based access control (RBAC):
 - Admin team management panel
 - Responsive layouts: desktop and mobile breakpoints
 
+- <img width="1470" height="596" alt="image" src="https://github.com/user-attachments/assets/f92c1b83-6039-4052-8acc-641dfb8c7235" title ="Login screen"/>
+
+
 ## Tests
 - `test_auth.py`: registration, login, profile fetch, password change, and admin role management
 - `test_projects.py`: auth required + manager-only creation
