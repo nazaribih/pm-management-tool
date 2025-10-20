@@ -10,6 +10,25 @@ export async function api(path, { method='GET', body, token } = {}) {
     },
     body: body ? JSON.stringify(body) : undefined
   })
-  if (!res.ok) throw new Error(await res.text())
-  return res.json()
+  const text = await res.text()
+  let data = null
+  if (text) {
+    try {
+      data = JSON.parse(text)
+    } catch (e) {
+      data = text
+    }
+  }
+
+  if (!res.ok) {
+    const message =
+      (data && typeof data === 'object' && (data.detail || data.message)) ||
+      (typeof data === 'string' && data) ||
+      res.statusText ||
+      'Request failed'
+    throw new Error(message)
+  }
+
+  if (!text) return null
+  return data
 }

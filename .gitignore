@@ -33,7 +33,13 @@ htmlcov/
 pytest_cache/
 instance/
 db.sqlite3
+pm_management.db
+/backend/pm_management.db
 /migrations/
+pm-management-tool.zip
+
+# Avoid committing generated archives
+*.zip
 
 # ==========================
 # FRONTEND (React / Node)

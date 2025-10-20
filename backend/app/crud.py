@@ -17,6 +17,20 @@ def create_user(db: Session, data: schemas.UserCreate, role=models.Role.user) ->
     db.refresh(user)
     return user
 
+
+def list_users(db: Session) -> List[models.User]:
+    return db.query(models.User).order_by(models.User.id).all()
+
+
+def update_user_role(db: Session, uid: int, role: models.Role) -> Optional[models.User]:
+    user = db.query(models.User).get(uid)
+    if not user:
+        return None
+    user.role = role
+    db.commit()
+    db.refresh(user)
+    return user
+
 def list_projects(db: Session, q: Optional[str] = None) -> List[models.Project]:
     query = db.query(models.Project)
     if q:

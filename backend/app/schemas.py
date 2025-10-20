@@ -52,6 +52,20 @@ class PasswordResetConfirm(BaseModel):
     def validate_new_password(cls, v: str) -> str:
         return _assert_strong_password(v)
 
+
+class PasswordChange(BaseModel):
+    current_password: str = Field(min_length=8)
+    new_password: str = Field(min_length=8)
+
+    @field_validator("new_password")
+    @classmethod
+    def validate_new_password(cls, v: str) -> str:
+        return _assert_strong_password(v)
+
+
+class UserRoleUpdate(BaseModel):
+    role: Role
+
 # ---- Projects & Tasks ----
 class ProjectBase(BaseModel):
     name: str = Field(min_length=2, max_length=255)
