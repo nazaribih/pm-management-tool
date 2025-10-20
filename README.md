@@ -56,3 +56,6 @@ python -m pytest
 To include a coverage report:
 ```bash
 python -m pytest --cov=app --cov-report=term-missing
+```
+
+The project also includes the report in the Report.md
