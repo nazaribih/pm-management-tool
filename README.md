@@ -58,4 +58,4 @@ To include a coverage report:
 python -m pytest --cov=app --cov-report=term-missing
 ```
 
-The project also includes the report in the Report.md
+The project also includes the report in the REPORT.md
