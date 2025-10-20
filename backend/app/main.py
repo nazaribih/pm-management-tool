@@ -8,9 +8,10 @@ from . import models
 from .routers_auth import router as auth_router
 from .routers_projects import router as projects_router
 from .routers_tasks import router as tasks_router
+from .routers_users import router as users_router
 from .security import hash_password
 
-app = FastAPI(title="Role-Based App")
+app = FastAPI(title="PM-management-tool API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -55,3 +56,4 @@ def health():
 app.include_router(auth_router)
 app.include_router(projects_router)
 app.include_router(tasks_router)
+app.include_router(users_router)

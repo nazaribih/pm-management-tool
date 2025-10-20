@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 from .database import get_db
 from . import schemas, crud, security, models
+from .deps import get_current_user
 from .config import settings
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -34,6 +35,11 @@ def refresh(token: str, db: Session = Depends(get_db)):
     refresh = security.create_token({"sub": str(user.id), "type": "refresh"}, settings.REFRESH_TOKEN_EXPIRE_MINUTES)
     return {"access_token": access, "refresh_token": refresh, "token_type": "bearer"}
 
+
+@router.get("/me", response_model=schemas.UserOut)
+def me(user=Depends(get_current_user)):
+    return user
+
 @router.post("/password-reset/request")
 def password_reset_request(payload: schemas.PasswordResetRequest, db: Session = Depends(get_db)):
     user = crud.get_user_by_email(db, payload.email)
@@ -55,5 +61,18 @@ def password_reset_confirm(payload: schemas.PasswordResetConfirm, db: Session = 
         raise HTTPException(status_code=400, detail="Invalid reset token")
     user.hashed_password = security.hash_password(payload.new_password)
     user.reset_token = None
+    db.commit()
+    return {"message": "Password updated"}
+
+
+@router.post("/change-password")
+def change_password(
+    payload: schemas.PasswordChange,
+    user=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    if not security.verify_password(payload.current_password, user.hashed_password):
+        raise HTTPException(status_code=400, detail="Current password is incorrect")
+    user.hashed_password = security.hash_password(payload.new_password)
     db.commit()
     return {"message": "Password updated"}
