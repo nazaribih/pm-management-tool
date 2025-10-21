@@ -1,8 +1,8 @@
-
 from fastapi.testclient import TestClient
 from .main import app
 
 client = TestClient(app)
+
 
 def auth(email, password):
     resp = client.post("/auth/login", data={"username": email, "password": password})

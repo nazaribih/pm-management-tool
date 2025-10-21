@@ -1,14 +1,15 @@
-
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Boolean, Text
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from .database import Base
 import enum
 
+
 class Role(str, enum.Enum):
     user = "user"
     manager = "manager"
     admin = "admin"
+
 
 class User(Base):
     __tablename__ = "users"
@@ -21,6 +22,7 @@ class User(Base):
 
     tasks = relationship("Task", back_populates="owner")
 
+
 class Project(Base):
     __tablename__ = "projects"
     id = Column(Integer, primary_key=True, index=True)
@@ -29,10 +31,12 @@ class Project(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     tasks = relationship("Task", back_populates="project", cascade="all,delete")
 
+
 class TaskStatus(str, enum.Enum):
     todo = "todo"
     doing = "doing"
     done = "done"
+
 
 class Task(Base):
     __tablename__ = "tasks"

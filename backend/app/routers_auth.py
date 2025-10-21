@@ -1,4 +1,3 @@
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
@@ -9,12 +8,14 @@ from .config import settings
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
+
 @router.post("/register", response_model=schemas.UserOut)
 def register(data: schemas.UserCreate, db: Session = Depends(get_db)):
     if crud.get_user_by_email(db, data.email):
         raise HTTPException(status_code=400, detail="Email already registered")
     user = crud.create_user(db, data)
     return user
+
 
 @router.post("/login", response_model=schemas.TokenPair)
 def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
@@ -24,6 +25,7 @@ def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get
     access = security.create_token({"sub": str(user.id), "role": user.role.value}, settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     refresh = security.create_token({"sub": str(user.id), "type": "refresh"}, settings.REFRESH_TOKEN_EXPIRE_MINUTES)
     return {"access_token": access, "refresh_token": refresh, "token_type": "bearer"}
+
 
 @router.post("/refresh", response_model=schemas.TokenPair)
 def refresh(token: str, db: Session = Depends(get_db)):
@@ -40,6 +42,7 @@ def refresh(token: str, db: Session = Depends(get_db)):
 def me(user=Depends(get_current_user)):
     return user
 
+
 @router.post("/password-reset/request")
 def password_reset_request(payload: schemas.PasswordResetRequest, db: Session = Depends(get_db)):
     user = crud.get_user_by_email(db, payload.email)
@@ -50,6 +53,7 @@ def password_reset_request(payload: schemas.PasswordResetRequest, db: Session = 
     db.commit()
     print(f"[DEMO] Password reset token for {user.email}: {token}")
     return {"message": "If the email exists, a reset token has been issued."}
+
 
 @router.post("/password-reset/confirm")
 def password_reset_confirm(payload: schemas.PasswordResetConfirm, db: Session = Depends(get_db)):
@@ -67,9 +71,9 @@ def password_reset_confirm(payload: schemas.PasswordResetConfirm, db: Session = 
 
 @router.post("/change-password")
 def change_password(
-    payload: schemas.PasswordChange,
-    user=Depends(get_current_user),
-    db: Session = Depends(get_db)
+        payload: schemas.PasswordChange,
+        user=Depends(get_current_user),
+        db: Session = Depends(get_db)
 ):
     if not security.verify_password(payload.current_password, user.hashed_password):
         raise HTTPException(status_code=400, detail="Current password is incorrect")

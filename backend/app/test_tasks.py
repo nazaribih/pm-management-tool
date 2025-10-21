@@ -1,5 +1,5 @@
-
 from .test_utils import client, auth
+
 
 def test_crud_tasks():
     h_user = auth("user@example.com", "User123!")
